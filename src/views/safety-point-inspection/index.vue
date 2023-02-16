@@ -1,12 +1,14 @@
 <template>
 
   <div>
+    <el-card>
     <div>
       <el-button type="primary" @click:="create">新增</el-button>
       <el-button type="primary" @click:="del">删除</el-button>
       <el-button type="primary" @click:="audit">提交</el-button>
       <el-button type="primary" @click:="upload">图文附件</el-button>
     </div>
+    <el-input v-model="input" placeholder="请输入内容"></el-input>
 
     <el-table
       :data="tableData"
@@ -25,6 +27,7 @@
         />
       </template>
     </el-table>
+    </el-card>
     <!-- <div v-for="(item,index) in tableHeader"></div> -->
   </div>
 </template>
@@ -127,7 +130,7 @@ export default {
     audit() {},
     upload() {},
     miss() {},
-    getList() {
+    getList() {  
       api.getData1(
       ).then(data => {
         this.tableData = data.data.root

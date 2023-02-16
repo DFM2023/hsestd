@@ -224,7 +224,14 @@ export const constantRoutes = [
         component: () => import('@/views/safety-point-inspection/index'),
         name: '安全点巡检',
         meta: { title: '安全点巡检', icont: 'el-icon-user-solid', noCache: true }
-      }
+      },
+      {
+        path: 'create',
+        component:() => import('@/views/safety-point-inspection/component/create'),
+        name: 'EditForm',
+        hidden: true,
+        meta: { title: '安全点巡检新增', icon: 'el-icon-user-solid', noCache: true }
+      },
     ]
   }
 
