@@ -3,16 +3,15 @@
       <el-card class="box-card">
         <div class="buttons">
         <div class="buttons">
-          <!-- <el-button type="primary" @click="create">新增</el-button>
-          <el-button type="primary" @click="del">删除</el-button> -->
+          <el-button type="primary" @click="create">新增</el-button>
+          <el-button type="primary" @click="del">删除</el-button>
           <el-button type="primary" @click="save">保存</el-button>
-          <!-- <el-button type="primary" @click="audit">提交</el-button>
+          <el-button type="primary" @click="audit">提交</el-button>
           <el-button type="primary" @click="unaudit">反提交</el-button>
-          <el-button type="primary" @click="upload">图文附件</el-button> -->
-          <!-- <el-button type="primary" @click="back">返回列表</el-button> -->
+          <el-button type="primary" @click="upload">图文附件</el-button>
+          <el-button type="primary" @click="back">返回列表</el-button>
         </div>
-        <!-- <el-button type="primary" @click="back">返回列表</el-button> -->
-      </div>
+        </div>
 
       <el-form label-width="180px" :model="form">
         <el-row>
@@ -45,8 +44,14 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="巡检日期">
-              <el-input placeholder="请选择日期" suffix-icon="el-icon-date" v-model="form.afe_insp__insp_date">
-              </el-input>
+              <el-date-picker
+                v-model="form.safe_insp__insp_date"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="7">
@@ -129,7 +134,6 @@ export default {
         
           input:'',
           form:{
-            safe_insp__audit:'',
             safe_insp__insp_code:'',
             safe_insp__insp_name:'',
             safe_insp__insp_date:'',
@@ -147,16 +151,14 @@ export default {
           },{
             value: '选项2',
             label: '巡查中'
-          }]
-
-        };
+          }],
+      };
+        
     },
     computed: {
 
     },
-    created() {
 
-    },
     mounted() {
 
     },
@@ -165,15 +167,20 @@ export default {
     },
     methods: {
       save(){
-        console.log(this.form, '????');
+        
         api.Crerte(this.form).then(data => {
           console.log(data, '返回的信息');
         })
-      }
+      },
+      back() {
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push('/safety-point-inspection/index')
+    }
     },
     components: {
-
-    },
+},
+  
+    
 };
 </script>
 

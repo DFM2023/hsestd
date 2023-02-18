@@ -3,13 +3,11 @@
   <div>
     <el-card>
     <div>
-      <el-button type="primary" @click:="create">新增</el-button>
-      <el-button type="primary" @click:="del">删除</el-button>
-      <el-button type="primary" @click:="audit">提交</el-button>
-      <el-button type="primary" @click:="upload">图文附件</el-button>
+      <el-button type="primary" @click="create">新增</el-button>
+      <el-button type="primary" @click="del">删除</el-button>
+      <el-button type="primary" @click="audit">提交</el-button>
+      <el-button type="primary" @click="upload">图文附件</el-button>
     </div>
-    <el-input v-model="input" placeholder="请输入内容"></el-input>
-
     <el-table
       :data="tableData"
       style="width: 100%"
@@ -48,17 +46,17 @@ export default {
           type: 'selection'
         },
         {
-          prop: 'safe_insp__audit',
+          prop: 'safe_insp__insp_cod',
           label: '巡检编号',
           width: '200px'
         },
         {
-          prop: 'safe_insp__insp_code',
+          prop: 'safe_insp__insp_name',
           label: '巡检名称',
           width: '200px'
         },
         {
-          prop: 'safe_insp__insp_name',
+          prop: 'safe_insp__insp_state',
           label: '巡检状态',
           width: '200px'
         },
@@ -125,17 +123,33 @@ export default {
 
   },
   methods: {
-    create() {},
+    create() {
+      const param = `/safety-point-inspection/create`
+      this.$router.push(param)
+    },
+    getList() {
+      let pageNo = this.pager.pageNo * this.pager.pageSize - this.pager.pageSize
+      if (pageNo < 0) {
+        pageNo = 0
+      }
+      api.getDate(
+        this.pager.pageSize,
+        pageNo,
+        this.whereSql
+      ).then(data => {
+        if (data.success) {
+          this.tableData = data.data.root
+          this.pager.total = data.data.total
+        } else {
+          this.$message.error(data.message)
+        }
+      })
+    },
     del() {},
     audit() {},
     upload() {},
     miss() {},
-    getList() {  
-      api.getData1(
-      ).then(data => {
-        this.tableData = data.data.root
-      })
-    }
+
   }
 }
 
