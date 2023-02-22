@@ -69,15 +69,15 @@
           <el-col :span="7">
             <el-form-item label="巡检频率">
               <el-select v-model="form.safe_insp__insp_times" placeholder="请选择  ">
-                  <el-option label="日检" value="shanghai">
+                  <el-option label="日检" value=" ">
                   </el-option>
-                  <el-option label="周检" value="beijing">
+                  <el-option label="周检" value=" ">
                   </el-option>
-                  <el-option label="月检" value="beijing">
+                  <el-option label="月检" value=" ">
                   </el-option>
-                  <el-option label="季检" value="beijing">
+                  <el-option label="季检" value=" ">
                   </el-option>
-                  <el-option label="年检" value="beijing">
+                  <el-option label="年检" value=" ">
                   </el-option>
                   </el-select>
             </el-form-item>
@@ -87,7 +87,7 @@
               <el-input
                 placeholder=""
                 v-model="form.safe_insp__insp_ed"
-                :disabled="true">
+                :disabled="disabled">
               </el-input>
             </el-form-item>
           </el-col>
@@ -96,16 +96,16 @@
               <el-input
                 placeholder=""
                 v-model="form.safe_insp__insp_ing"
-                :disabled="true">
+                :disabled="disabled">
               </el-input>
              </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="待巡检数量" >
+            <el-form-item label="巡检不合格数量" >
                 <el-input
                   placeholder=""
                   v-model="form.safe_insp__insp_non"
-                  :disabled="true">
+                  :disabled="disabled">
                </el-input>
              </el-form-item>
             
@@ -166,6 +166,7 @@ export default {
 
     },
     methods: {
+      disabled:false,
       save(){
         
         api.Crerte(this.form).then(data => {

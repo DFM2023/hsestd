@@ -1,3 +1,4 @@
+// 接口调用
 import request from '@/utils/request'
 import store from '@/store/modules/user'
 
@@ -39,6 +40,7 @@ export default {
       data: `${data}`
     }).then(response => response.data)
   },
+
   Delete(ids) {
     let keys = ''
     ids.forEach(d => {
@@ -47,7 +49,7 @@ export default {
     return request({
       url: `/commonAction.do`,
       method: 'post',
-      data: `funid=sys_dept&${keys}pagetype=editgrid&eventcode=delete_eg&user_id=${roles}&dataType=json`
+      data: `funid=safe_insp&${keys}pagetype=grid&eventcode=delete&user_id=${roles}&dataType=json`
     }).then(response => response.data)
   },
   getFormDate(id) {

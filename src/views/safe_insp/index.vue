@@ -1,7 +1,9 @@
+<!-- 首页原码 -->
 <template>
   <div class="app-container">
     <div class="head">
       <div>
+        <el-button type="warning" @click="test">测试</el-button>
         <el-button type="primary" @click="editCreate">新增</el-button>
         <el-button type="primary" @click="editDelete">删除</el-button>
         <el-button type="primary" @click="editSave">保存</el-button>
@@ -12,6 +14,7 @@
       <Search funid="safe_insp" @search="search" />
     </div>
     <el-card>
+      <!-- @selection-change 通过事件调用函数 handleSelectionChange -->
       <el-table
         ref="table"
         :data="data"
@@ -23,7 +26,7 @@
       >
         <el-table-column type="index" fixed="left" width="35px" />
         <template v-for="(d,i) in tableHeader">
-          <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
+          <el-table-column v-if="d.type && d.type === 'selection'"  :type="d.type" :fixed="d.fixed" />
           <el-table-column
             v-else-if="d.show !== false"
             :key="i"
@@ -37,7 +40,7 @@
             <template slot-scope="scope">
               <div v-if="d.label==='巡检状态'">
                 {{
-                  scope.row.ssafe_insp__insp_state == 1 ? '巡检中' : '已巡检'
+                  scope.row.safe_insp__insp_state == 1 ? '巡检中' : '已巡检'
                 }}
               </div>
               <div v-else-if="d.label==='巡检日期'">
@@ -70,13 +73,14 @@
 
 <script>
 import api from './api'
-import Search from '@/components/Search'
-import { parseDay } from '@/utils/index'
+import Search from '@/components/Search' // 导入子组件 在HTML中直接使用
+import { parseDay } from '@/utils/index' // @就等于 src 目录
 export default {
   name: 'SafeIdsp',
-  components: {
+  components: { // 引入的子组件，这里需要注册
     Search
   },
+  props:{},
   data() {
     return {
       parseDay,
@@ -195,11 +199,11 @@ export default {
       whereValue: ''
     }
   },
-  created() {
+  created() { // 生命周期钩子函数
     this.getList()
     this.transitionTree()
   },
-  mounted() {
+  mounted() { // 生命周期钩子函数
   },
   methods: {
     getList() {
@@ -319,12 +323,12 @@ export default {
     expxls() {},
     Delete(row) {
       this.ids = []
-      this.ids.push(row.sys_dept__dept_id)
+      this.ids.push(row.safe_insp__safe_insp_id)
       this.editDelete()
     },
     editDelete() {
       if (this.ids && this.ids.length > 0) {
-        this.$confirm('确认删除部门？').then(() => {
+        this.$confirm('确认删除所选数据？').then(() => {
           api.Delete(this.ids).then(data => {
             if (data.success) {
               this.getList()
@@ -345,7 +349,7 @@ export default {
       console.log('upload')
     },
     edit(row) {
-      this.id = row.sys_dept__dept_id
+      this.id = row.safe_insp__safe_insp_id
       this.parent_id = this.id.substring(0, this.id.length - 4)
       console.log(this.parent_id, this.id)
       this.auditForm = row
@@ -390,7 +394,9 @@ export default {
       this.getList()
     },
     handleSelectionChange(val) {
-      this.ids = val.map(d => d.sys_dept__dept_id)
+      console.log(val,'dayin');
+      this.ids = val.map(d => d.safe_insp__safe_insp_id)
+      console.log(this.ids);
       this.levels = val.map(d => d.sys_dept__dept_level)
     },
     closeDialog() {
@@ -398,6 +404,10 @@ export default {
       this.$refs['form'].resetFields()
       this.form.dept_name = ''
       this.form.dept_code = ''
+    },
+    test(){
+      this.$refs.table.clearSelection() // 通过ref拿到el-table的内置方法
+      console.log(this.$refs,'table');
     }
   }
 }

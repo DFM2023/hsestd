@@ -46,7 +46,7 @@ export default {
   components: {
     // buttons
   },
-  props: {
+  props: { // 接受父组件的数据 属于数据父传子
     dataId: {
       type: Array,
       default: () => []
@@ -179,7 +179,7 @@ export default {
         }
       }
       console.log(whereSql, '1231')
-      this.$emit('search', `${whereSql}`)
+      this.$emit('search', `${whereSql}`) // 给组件方法 search 调用事件并且返回值为 `${whereSql}`  属于子组件传递数据给父组件
     }
   }
 }

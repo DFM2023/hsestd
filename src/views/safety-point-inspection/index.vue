@@ -8,8 +8,9 @@
       <el-button type="primary" @click="audit">提交</el-button>
       <el-button type="primary" @click="upload">图文附件</el-button>
     </div>
+    <!-- 删除按钮 -->
     <el-table
-      :data="tableData"
+      :data="data"
       style="width: 100%"
     >
       <template v-for="(item ,i) in tableHeader">
@@ -46,7 +47,7 @@ export default {
           type: 'selection'
         },
         {
-          prop: 'safe_insp__insp_cod',
+          prop: 'safe_insp__insp_code',
           label: '巡检编号',
           width: '200px'
         },
@@ -99,9 +100,11 @@ export default {
           prop: 'safe_insp_audit',
           label: '单据状态',
           width: '200px'
-        }
+        },
+        
       ],
-      tableData: [],
+     
+      data: [],
       pager: {
         pageNo: 0,
         pageSize: 10,
@@ -123,6 +126,7 @@ export default {
 
   },
   methods: {
+    //新增跳转路由
     create() {
       const param = `/safety-point-inspection/create`
       this.$router.push(param)
@@ -132,24 +136,58 @@ export default {
       if (pageNo < 0) {
         pageNo = 0
       }
+
+      //调用数据库接口
       api.getDate(
         this.pager.pageSize,
         pageNo,
         this.whereSql
       ).then(data => {
         if (data.success) {
-          this.tableData = data.data.root
+          this.data = data.data.root
           this.pager.total = data.data.total
         } else {
           this.$message.error(data.message)
         }
       })
     },
-    del() {},
+    
     audit() {},
     upload() {},
     miss() {},
-
+    handleSelectionChange(val) {
+      console.log(val,'dayin');
+      this.ids = val.map(item => item.safe_insp__safe_insp_id)
+      console.log(this.ids);
+      this.levels = val.map(item => item.sys_dept__dept_level)
+    },
+    
+    // 删除按钮
+    Delete(row) {
+      this.ids = []
+      this.ids.push(row.safe_insp__safe_insp_id)
+      this.del()
+    },
+    del(){
+    if (this.ids && this.ids.length > 0) {
+        this.$confirm('确认删除该数据？').then(() => {
+          api.Delete(this.ids).then(data => {
+            if (data.success) {
+              this.getList() // 更新列表
+              this.$message.success('删除成功！')
+            } else {
+              this.$message.error(data.message)
+            }
+          })
+        }).catch(() => {})
+      } else {
+        this.$message.warning('请选择数据进行删除')
+      }
+    },
+    back() {
+      this.$store.dispatch('/safety-point-inspection/index', this.$route)
+      this.$router.push('/safety-point-inspection/index')
+    },
   }
 }
 
