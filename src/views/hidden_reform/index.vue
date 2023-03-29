@@ -38,7 +38,7 @@
                   scope.row.hidden_danger__hidden_state == 3 ? '排查中' : scope.row.hidden_danger__hidden_state == 2 ? '待整改' :scope.row.hidden_danger__hidden_state == 3 ? '整改中' :scope.row.hidden_danger__hidden_state == 4 ? '待验收' : '已验收'
                 }}</el-tag>
               </div>
-              <div v-else-if="d.label==='检查时间'">
+              <div v-else-if="d.label==='检查时间'"> 
                 {{ parseDay(scope.row.hidden_danger__check_date) }}
               </div>
               <div v-else-if="d.label==='整改期限'">
